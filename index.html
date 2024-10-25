@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Matching Game</title>
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="color game" />
+    <meta name="description" content="color change game" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://dream-house-theta.vercel.app/" />
+    <meta property="og:title" content="color game" />
+    <meta property="og:description" content="color change game" />
+    <meta property="og:image" content="/meta-tag.png" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://dream-house-theta.vercel.app/" />
+    <meta property="twitter:title" content="color game" />
+    <meta property="twitter:description" content="color change game" />
+    <meta property="twitter:image" content="/meta-tag.png" />
+    <!-- Meta Tags Generated with https://metatags.io/ -->
+    <style>
+        .container {
+            max-width: 600px;
+            margin: auto;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 54px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        #rgbValue {
+            color: #555;
+            font-weight: bold;
+        }
+
+        .color-grid {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .color-box {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            border: 2px solid #ddd;
+            transition: transform 0.2s;
+        }
+
+        .color-box:hover {
+            transform: scale(1.1);
+        }
+
+        #resetButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #008cba;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #resetButton:hover {
+            background-color: #005f5f;
+        }
+
+        #message {
+            font-size: 16px;
+            color: #333;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="container">
+            <h1>Color Matching Game</h1>
+            <h2>Guess the color: <span id="rgbValue"></span></h2>
+            <div class="color-grid">
+                <div class="color-box" id="box1"></div>
+                <div class="color-box" id="box2"></div>
+                <div class="color-box" id="box3"></div>
+            </div>
+            <button id="resetButton">Play Again</button>
+            <p id="message"></p>
+        </div>
+    </section>
+    <script>
+        const [rgbValue, message, reset] = ['rgbValue', 'message', 'resetButton'].map(id => document.getElementById(id)),
+            boxes = document.querySelectorAll('.color-box'),
+            randomColor = () => `rgb(${[...Array(3)].map(() => Math.floor(Math.random() * 256)).join(', ')})`;
+        function startGame() {
+            message.textContent = '';
+            const colors = [...boxes].map(randomColor), correctColor = colors[Math.floor(Math.random() * colors.length)];
+            rgbValue.textContent = correctColor;
+            boxes.forEach((box, i) => {
+                box.style.backgroundColor = colors[i];
+                box.onclick = () => {
+                    const isCorrect = box.style.backgroundColor === correctColor;
+                    message.textContent = isCorrect ? 'Correct! You Win!' : 'Wrong! Try again!';
+                    if (isCorrect) boxes.forEach(b => (b.style.backgroundColor = correctColor, b.onclick = null));
+                };
+            });
+        }
+        reset.onclick = startGame;
+        startGame();
+    </script>
+
+
+</body>
+
+</html>
